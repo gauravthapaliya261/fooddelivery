@@ -1,0 +1,46 @@
+<div class="container">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="center">
+        <a [routerLink]="['/checkout']" routerLinkActive="router-link-active" style="color: #8eb105;"><strong>Go to
+            Checkout | <i class="fa fa-shopping-cart"></i></strong></a>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="center">
+        <h3 style="color: #349cf7;"><strong>Our Menus</strong></h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="flex-container">
+        <a (click)="selectMenu('all')">All <span>| <i class="fa fa-cutlery"></i></span></a>
+        <a (click)="selectMenu('break')">Breakfast <span>| <i class="fa fa-cutlery"></i></span></a>
+        <a (click)="selectMenu('meal')">Meals <span>| <i class="fa fa-coffee"></i></span></a>
+        <a (click)="selectMenu('dessert')">Desserts <span>| <i class="fa fa-glass"></i></span></a>
+        <a (click)="selectMenu('drinks')">Drinks <span>| <i class="fa fa-coffee"></i></span></a>
+      </div>
+    </div><br>
+    <div class="row" *ngIf="selectedMenu">
+      <div class="col-md-4" style="margin-bottom: 15pt;" *ngFor="let item of selectedMenu">
+        <div class="card-sl">
+          <div class="card-image">
+            <img [src]="item.image ? item.image : altImage" alt="" />
+          </div>
+          <a class="card-action" (click)="addToCart(item)"><i class="fa fa-cart-plus"></i></a>
+          <div class="card-heading">
+            {{item.title}}
+          </div>
+          <div class="card-text desc">
+            {{item.description}}
+          </div>
+          <div class="card-text">
+            ${{item.price}}
+          </div>
+          <a [routerLink]="['/details/' + item.title]" routerLinkActive="router-link-active"
+            class="card-button">Details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

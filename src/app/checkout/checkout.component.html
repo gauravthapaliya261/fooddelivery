@@ -1,0 +1,136 @@
+<div class="container">
+  <div class="col-md-12 content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-info panel-shadow">
+          <div class="panel-heading">
+            <h3>
+              Checkout
+            </h3>
+          </div>
+          <div class="panel-body">
+            <div class="jumbotron" *ngIf="checkoutItems.length === 0">
+              <h1 class="display-3" style="color: #e75b1e;">Oops ! Your cart is empty.</h1>
+              <p class="lead" style="color: #349cf7;">Please add at least one ore more items to your cart.</p>
+              <hr class="my-2">
+            </div>
+            <div *ngIf="checkoutItems.length > 0" class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Description</th>
+                    <th>Qty</th>
+                    <th></th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of checkoutItems; let i = index">
+                    <td><img [src]="item.image ? item.image : altImage" class="img-cart"></td>
+                    <td><strong>{{item.title}}</strong>
+                    </td>
+                    <td style="width: 10%;">
+                      <input (keyup)="callCh(item, $event)" class="form-control" type="number" [value]="item.quantity"
+                        min="1" oninput="this.value = Math.abs(this.value)" style="text-align: center;">
+                    </td>
+                    <td style="width: 10%;">
+                      <button rel="tooltip" class="btn btn-default" (click)="increment(item)"><i
+                          class="fa fa-plus"></i></button>
+                      <button rel="tooltip" class="btn btn-default" (click)="decrement(item)"><i
+                          class="fa fa-minus"></i></button>
+                    </td>
+                    <td>${{item.price}}</td>
+                    <td>${{item.price*item.quantity | number: '1.2-2'}}</td>
+                    <td>
+                      <a (click)="removeItem(item)" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>
+                    </td>
+                  </tr>
+                  <!-- <tr>
+                    <td colspan="7">&nbsp;</td>
+                  </tr> -->
+                  <tr>
+                    <td colspan="4"></td>
+                    <td colspan="2" class="text-right">Total Product</td>
+                    <td>${{subTotal | number: '1.2-2'}}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="4"></td>
+                    <td colspan="2" class="text-right">Total Shipping</td>
+                    <td>${{shippingCost | number: '1.2-2'}}</td>
+                  </tr>
+                  <tr>
+                    <td colspan="4"></td>
+                    <td colspan="2" class="text-right"><strong>Total</strong></td>
+                    <td>${{grandTotal | number: '1.2-2'}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <br>
+        <a [routerLink]="['/']" routerLinkActive="router-link-active" class="btn btn-success">Continue
+          Shopping</a>
+          <a *ngIf="checkoutItems.length > 0" (click)="clearCart()" class="btn btn-danger" style="margin-left: 1em;">Clear Cart</a>
+        <a *ngIf="checkoutItems.length > 0" class="btn btn-primary pull-right" (click)="open(mymodal)">Checkout</a>
+      </div>
+    </div>
+  </div><br>
+</div>
+
+<ng-template #mymodal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Please fill in your details</h5>
+    <button id="cross" type="button" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="formBasic">
+      <div class="row">
+        <div class="col-md-6 form-group mb-3">
+          <label for="AttributeName">First Name</label>
+          <input type="text" class="form-control" formControlName="firstName" placeholder="Enter First Name">
+          <div class="text-danger" *ngIf="firstName.touched && firstName.invalid">
+            <strong class="text-capitalize">First Name is required</strong>
+          </div>
+        </div>
+        <div class="col-md-6 form-group mb-3">
+          <label for="AttributeName">Last Name</label>
+          <input type="text" class="form-control" formControlName="lastName" placeholder="Enter Last Name">
+          <div class="text-danger" *ngIf="lastName.touched && lastName.invalid">
+            <strong class="text-capitalize">Last Name is required</strong>
+          </div>
+        </div>
+        <div class="col-md-6 form-group mb-3">
+          <label for="AttributeName">Card Number</label>
+          <input type="text" class="form-control" formControlName="cardNumber" mask="0000 0000 0000 0000" placeholder="Enter Card Number">
+          <div class="text-danger" *ngIf="cardNumber.touched && cardNumber.invalid">
+            <strong class="text-capitalize">Card Number is required</strong>
+          </div>
+        </div>
+        <div class="col-md-6 form-group mb-3">
+          <label for="AttributeName">CVC</label>
+          <input type="text" class="form-control" formControlName="cvc" placeholder="Enter CVC">
+          <div class="text-danger" *ngIf="cvc.touched && cvc.invalid">
+            <strong class="text-capitalize">CVC is required</strong>
+          </div>
+        </div>
+        <div class="col-md-12 form-group mb-3">
+          <label for="AttributeName">Expires On:</label>
+          <input type="date" class="form-control" formControlName="expiryDate">
+          <div class="text-danger" *ngIf="expiryDate.touched && expiryDate.invalid">
+            <strong class="text-capitalize">Expiry Date is required</strong>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Close</button>
+    <button type="button" class="btn btn-primary" [disabled]="formBasic.invalid" (click)="submitForm()" (click)= "modal.close('Save click')">Submit</button>
+  </div>
+</ng-template>
