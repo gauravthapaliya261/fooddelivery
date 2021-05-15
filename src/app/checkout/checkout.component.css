@@ -1,0 +1,32 @@
+.img-cart {
+  display: block;
+  max-width: 120px;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* table tr {
+  border: 1px solid #b33838;
+}
+
+table tr th {
+  background: rgb(192, 173, 173);
+} */
+
+.panel-shadow {
+  box-shadow: rgba(0, 0, 0, 0.3) 7px 7px 7px;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+#cross {
+  border: none;
+  background: none;
+}
+
+.table-responsive::-webkit-scrollbar {
+  display: none;
+}
